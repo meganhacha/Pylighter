@@ -3,6 +3,7 @@ from docx.enum.text import WD_COLOR_INDEX
 from tkinter import Tk, filedialog
 import os
 
+days_of_the_week = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}
 
 def highlight_lines(doc, keyword, color):
 
@@ -39,7 +40,7 @@ def get_highlight(keyword):
        highlight_color = WD_COLOR_INDEX.TURQUOISE
        return highlight_color
 
-    elif key == "MONDAY" or key == "TUESDAY" or key == "WEDNESDAY" or key== "THURSDAY" or key == "FRIDAY" or key == "SATURDAY" or key == "SUNDAY":
+    elif key in days_of_the_week:
        highlight_color = WD_COLOR_INDEX.PINK
        return highlight_color
     
