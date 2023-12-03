@@ -1,5 +1,4 @@
 from docx import Document
-from docx.shared import RGBColor
 from docx.enum.text import WD_COLOR_INDEX
 from tkinter import Tk, filedialog
 import os
