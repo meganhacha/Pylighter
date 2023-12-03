@@ -4,9 +4,9 @@ When we get larger lists, this can be incredibly time consuming. After looking i
 The result? Pylighter. 
 
 Our standard highlighting goes:
-PINK - Day and Date
-ORANGE - Event/Meeting Title
-YELLOW - Event Date/Time
+PINK - Day and Date;
+ORANGE - Event/Meeting Title;
+YELLOW - Event Date/Time;
 GREEN - specified Concierge duties
 
 However, the one major flaw is that Word does not offer an orange highlighter, so red is what is substituted.
