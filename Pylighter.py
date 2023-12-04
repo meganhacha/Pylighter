@@ -27,26 +27,31 @@ def select_file():
    return file_path
 
 def get_highlight(keyword):
-    key = keyword
-    if key == "Event:" or key == "Meeting:":
+   key = keyword
+   highlight_color = WD_COLOR_INDEX.GRAY_50
+
+   if key == "Event Date/Time:" or key == "Date/Time:":
+      highlight_color = WD_COLOR_INDEX.YELLOW
+      return highlight_color
+
+   if key == "Event:" or key == "Meeting:":
       highlight_color = WD_COLOR_INDEX.RED
       return highlight_color
     
-    elif key == "Event Date/Time:" or key == "Date/Time:":
-       highlight_color = WD_COLOR_INDEX.YELLOW
-       return highlight_color
-    
-    elif key == "Location:":
-       highlight_color = WD_COLOR_INDEX.TURQUOISE
-       return highlight_color
+   if key == "Location:":
+      highlight_color = WD_COLOR_INDEX.TURQUOISE
+      return highlight_color
 
-    elif key in days_of_the_week:
-       highlight_color = WD_COLOR_INDEX.PINK
-       return highlight_color
+   if key in days_of_the_week:
+      highlight_color = WD_COLOR_INDEX.PINK
+      return highlight_color
     
-    elif key == "Concierge":
-       highlight_color = WD_COLOR_INDEX.BRIGHT_GREEN
-       return highlight_color
+   if key == "Concierge":
+      highlight_color = WD_COLOR_INDEX.BRIGHT_GREEN
+      return highlight_color
+   else:
+      highlight_color = WD_COLOR_INDEX.GRAY_50
+      return highlight_color
 
 
 if __name__ == "__main__":
@@ -59,7 +64,7 @@ if __name__ == "__main__":
 
         doc= Document(input_file)
         highlight_list = []
-        highlight_list.append( "Event:")
+        highlight_list.append("Event:")
         highlight_list.append("Meeting:")
         highlight_list.append("Event Date/Time:")
         highlight_list.append("Date/Time:")
@@ -75,7 +80,7 @@ if __name__ == "__main__":
 
         for key in highlight_list:
            color = get_highlight(key)
-           print(f"{color}")
+           print(f"{key}")
            highlight_lines(doc, key, color)
 
         output_file = filedialog.asksaveasfilename(
