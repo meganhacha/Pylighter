@@ -63,7 +63,7 @@ def get_highlight(keyword):
       highlight_color = WD_COLOR_INDEX.PINK
       return highlight_color
    
-   if key == "Event:" or key == "Meeting:":
+   if key == "Event:" or key == "Meeting:" or key == "SETUP":
       highlight_color = WD_COLOR_INDEX.RED
       return highlight_color
    
@@ -94,6 +94,7 @@ if __name__ == "__main__":
       highlight_list = []
       highlight_list.append("Event:")
       highlight_list.append("Meeting:")
+      highlight_list.append("SETUP")
       highlight_list.append("Event Date/Time:")
       highlight_list.append("Date/Time:")
       highlight_list.append("Location:")
