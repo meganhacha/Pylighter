@@ -25,5 +25,5 @@ A Brief How-To:
     If copied & pasted, they must be pasted with the "Keep Text Only" setting, as there are
     weird things that can occur with the standard Ctrl + V pasting, involving new lines and
     spacing, that can't be worked around very easily. <br />
-3. When saving, make sure you save it as a docx file. Otherwise, this will not work. It's highly recommended to go over the inputted information to make sure there are no typos, missing bits, etc. <br />
+3. When saving, make sure you save it as a docx file. Otherwise, this will not work. It's highly recommended to go over the inputted information to make sure there are no typos, missing bits, or anything else important. <br />
 4. Start the program. It will ask you what file you'd wish to open. Select where to save and you're done! <br />
