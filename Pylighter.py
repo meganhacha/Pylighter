@@ -5,12 +5,15 @@ from tkinter import Tk, filedialog
 import os
 
 days_of_the_week = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}
+highlight_list = []
+bold_list = []
+underline_list = []
 
 def bold_text(doc, keyword):
    for p in doc.paragraphs:
 
       for r in p.runs:
-         if any(word in r.text for word in keyword):
+         if keyword in r.text:
             r.font.bold = True
 
 def underline_text(doc, keyword):
@@ -20,12 +23,13 @@ def underline_text(doc, keyword):
          if any(word in r.text for word in keyword):
             r.font.underline = True
 
-def allover_text(doc):
+def allover_text(doc, keyword):
    for p in doc.paragraphs:
 
       for r in p.runs:
          r.font.size = Pt(12)
          r.font.name = 'Arial'
+
 
 def get_paragraph_text(paragraph):
    text = ''.join(run.text for run in paragraph.runs)
@@ -91,7 +95,6 @@ if __name__ == "__main__":
     else:
 
       doc= Document(input_file)
-      highlight_list = []
       highlight_list.append("Event:")
       highlight_list.append("Meeting:")
       highlight_list.append("SETUP")
@@ -110,8 +113,7 @@ if __name__ == "__main__":
       for key in highlight_list:
          color = get_highlight(key)
          highlight_lines(doc, key, color)
-      
-      bold_list = []
+
       bold_list.append('Organization:')
       bold_list.append('Contact person day of event:')
       bold_list.append('# of people expected to attend:')
@@ -121,10 +123,13 @@ if __name__ == "__main__":
       bold_list.append('Food Services:')
       bold_list.append('Security')
 
-      allover_text(doc)
-      print(highlight_list[0])
-      bold_text(doc, highlight_list)
-      bold_text(doc, bold_list)
+      allover_text(doc, bold_list)
+
+      for b_word in bold_list:
+         bold_text(doc, b_word)
+
+      for h_word in highlight_list:
+         bold_text(doc, h_word)
 
         
       
