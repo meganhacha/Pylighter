@@ -19,7 +19,7 @@ A Brief How-To:
     **Event Date/Time:** date of event <br />
     **Location:** room <br />
     **Organization:** either within company or outside org.<br />
-    -other details pertaining to event-
+    -other details pertaining to event- <br />
     **Concierge / other departments:** what we/they will do <br />
 
     If copied & pasted, they must be pasted with the "Keep Text Only" setting, as there are
