@@ -1,18 +1,24 @@
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_COLOR_INDEX
+from docx.shared import RGBColor
 from tkinter import Tk, filedialog
 import os
 
-days_of_the_week = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}
-highlight_list = []
-bold_list = []
+COLOR_INDEX = {
+   "PINK": WD_COLOR_INDEX.PINK,
+   "GREEN": WD_COLOR_INDEX.GREEN,
+   "TURQUOISE": WD_COLOR_INDEX.TURQUOISE,
+   "YELLOW": WD_COLOR_INDEX.YELLOW,
+   "BRIGHT_GREEN": WD_COLOR_INDEX.BRIGHT_GREEN,
+}
+
 underline_list = []
 
 #Bold event titles and subsequent info if on the same line.
 def bold_text(doc, keyword):
-   for p in doc.paragraphs:
 
+   for p in doc.paragraphs:
       for r in p.runs:
          if keyword in r.text:
             r.font.bold = True
@@ -26,7 +32,7 @@ def underline_text(doc, keyword):
             r.font.underline = True
 
 #Change the font and text size of the entire document.
-def allover_text(doc, keyword):
+def allover_text(doc):
    for p in doc.paragraphs:
 
       for r in p.runs:
@@ -35,9 +41,8 @@ def allover_text(doc, keyword):
 
 #Get each individual line, ignoring whitespaces.
 def get_paragraph_text(paragraph):
-   text = ''.join(run.text for run in paragraph.runs)
-   text.strip()
-   return text
+   return ''.join(run.text for run in paragraph.runs).strip()
+
 
 #Highlight the lines that are applicable, based on the list of keywords below.
 def highlight_lines(doc, keyword, color):
@@ -47,6 +52,9 @@ def highlight_lines(doc, keyword, color):
 
          for run_h in paragraph.runs:
             run_h.font.highlight_color = color
+            if keyword in {"Event:", "Meeting:", "SETUP"}:
+               run_h.font.color.rgb = RGBColor(255, 255, 255)
+            
 
 #Allows the saving of a new -- now highlighted and edited -- Word doc.
 def save_doc(doc, output_path):
@@ -66,33 +74,22 @@ def select_file():
 
 #Using the provided keywords, selects the highlight color for each section.
 def get_highlight(keyword):
-   key = keyword
-   highlight_color = WD_COLOR_INDEX.GRAY_50
+   key_color_mapping = {
+        "PINK": {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"},
+        "GREEN": {"Event:", "Meeting:", "SETUP"},
+        "TURQUOISE": {"Location:"},
+        "YELLOW": {"Event Date/Time:", "Date/Time:"},
+        "BRIGHT_GREEN": {"Concierge:", "Concierge/MSGS:", "Concierge/FOH:"},
+    }
 
-   if key in days_of_the_week:
-      highlight_color = WD_COLOR_INDEX.PINK
-      return highlight_color
-   
-   if key == "Event:" or key == "Meeting:" or key == "SETUP":
-      highlight_color = WD_COLOR_INDEX.RED
-      return highlight_color
-   
-   if key == "Location:":
-      highlight_color = WD_COLOR_INDEX.TURQUOISE
-      return highlight_color
-   
-   if key == "Event Date/Time:" or key == "Date/Time:":
-      highlight_color = WD_COLOR_INDEX.YELLOW
-      return highlight_color
-   
-   if key == "Concierge":
-      highlight_color = WD_COLOR_INDEX.BRIGHT_GREEN
-      return highlight_color
-   
-   return highlight_color
+   for color, keys in key_color_mapping.items():
+      if keyword in keys:
+         return COLOR_INDEX[color]
+
+   return None
 
 
-if __name__ == "__main__":
+def main():
    
     input_file = select_file()
 
@@ -101,38 +98,11 @@ if __name__ == "__main__":
     else:
       #Open the selected doc, and add the applicable keywords that need to have their sections highlighted.
       doc= Document(input_file)
-      highlight_list.append("Event:")
-      highlight_list.append("Meeting:")
-      highlight_list.append("SETUP")
-      highlight_list.append("Event Date/Time:")
-      highlight_list.append("Date/Time:")
-      highlight_list.append("Location:")
-      highlight_list.append("MONDAY")
-      highlight_list.append("TUESDAY") 
-      highlight_list.append("WEDNESDAY")
-      highlight_list.append("THURSDAY")
-      highlight_list.append("FRIDAY")
-      highlight_list.append("SATURDAY")
-      highlight_list.append("SUNDAY")
-      highlight_list.append("Concierge")
-
-      #Traverse the document, highlighting each word with its corresponding color.
-      for key in highlight_list:
-         color = get_highlight(key)
-         highlight_lines(doc, key, color)
-
-      #Create a list of words that are typically bolded in the document.
-      bold_list.append('Organization:')
-      bold_list.append('Contact person day of event:')
-      bold_list.append('# of people expected to attend:')
-      bold_list.append('Event Description:')
-      bold_list.append('Setup/Tear Down:')
-      bold_list.append('Tech Needs:')
-      bold_list.append('Food Services:')
-      bold_list.append('Security')
+      highlight_list = {"Event:", "Meeting:", "SETUP", "Event Date/Time:", "Date/Time:", "Location:", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY", "Concierge:", "Concierge/MSGS:", "Concierge/FOH:"}
+      bold_list = {"Organization:", "Contact person day of event:", "# of people expected to attend:", "Event Description:", "Setup/Tear Down:", "Tech Needs:", "Food Services:", "Security"}
 
       #Change the text to the correct font and text size.
-      allover_text(doc, bold_list)
+      allover_text(doc)
 
       #Use the bold list to bold all instances of the bold list in the Document.
       for b_word in bold_list:
@@ -140,7 +110,11 @@ if __name__ == "__main__":
       for h_word in highlight_list:
          bold_text(doc, h_word)
 
-        
+      #Traverse the document, highlighting each word with its corresponding color.
+      for key in highlight_list:
+         color = get_highlight(key)
+         highlight_lines(doc, key, color)
+      
       
 
       output_file = filedialog.asksaveasfilename(
@@ -153,4 +127,8 @@ if __name__ == "__main__":
          save_doc(doc, output_file)
          print(f"Document saved to {output_file}")
       else:
-         print("No output file selected. Exiting.")
+         print("No output file selected. Exiting.")       
+
+
+if __name__ == "__main__":
+    main()
