@@ -1,5 +1,5 @@
 # Pylighter
-One of the biggest parts of my current job is printing out our events list every single Saturday and highlighting lines according to their information (event/meeting name, location, concierge duties, etc.).
+One of the biggest parts of my current job is printing out our events list every Saturday and highlighting lines according to their information (event/meeting name, location, concierge duties, etc.).
 When we get larger lists, this can be incredibly time consuming. After looking into Python and Python-docx, I realized we could use it to shorten this process.
 The result? Pylighter. 
 
